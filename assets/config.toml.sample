@@ -1,0 +1,55 @@
+# This is the configuration file for listenbrainz-mpd.
+
+# This section configures how the application will submit your listens to ListenBrainz.
+[submission]
+# The user token.
+#
+# If you use listenbrainz.org, obtain this from https://listenbrainz.org/profile and put it
+# between the quotes.
+#
+# The `LISTENBRAINZ_TOKEN` environment variable will be preferred over this field if present.
+token = ""
+# Alternatively you can specify a path to a file that contains the token. This file will be read
+# at runtime. Leading and trailing whitespace will be removed prior to use.
+#token_file = ""
+
+# Submit genre tags on the played songs as folksonomy tags.
+#genres_as_folksonomy = true
+
+# Split genres at the given separator character (and remove whitespace). This can be used if your
+# genre tags are not multiple values, but separated with something like semicolons or slashes.
+# Defaults to no splitting.
+#genre_separator = ";"
+
+# Base URL of the submission API. Change this if you want to use a different provider than
+# listenbrainz.org.
+#api_url = "https://api.listenbrainz.org"
+
+# Listens that are not immediately sucessfully transmitted (e.g. because you are offline or the
+# target server is having an outage) can be saved to a local cache for later submission and will
+# automatically be retried.
+# This is enabled by default, but can be disabled if undesired.
+#enable_cache = true
+
+# Path to the cache file that stores failed listens. Defaults to
+# `$XDG_DATA_HOME/listenbrainz-mpd-cache.sqlite3` or
+# `$HOME/.local/share/listenbrainz-mpd-cache.sqlite3` if unset.
+#cache_file = "/some/other/path/filename.db"
+
+# This section configures how the application connects to your MPD server.
+#
+# The `MPD_HOST` and `MPD_PORT` environment variables will be preferred over the settings from
+# this section if present. Their syntax is compatible to that used by mpc.
+[mpd]
+# Address of the MPD server.
+# This may be an IP address or a hostname. If no port is specified, port 6600 is assumed.
+# If the value starts with a slash ("/"), it specifies a path to a Unix socket instead.
+#address = "localhost:6600"
+
+# MPD server password.
+# Defaults to no password.
+#password = ""
+# Alternatively you can specify a path to a file that contains the password. This file will be
+# read at runtime.
+# Defaults to no path.
+#password_file = ""
