@@ -25,7 +25,7 @@ jobs:
       - name: Prepare for docker build
         id: prepare
         run: |
-          image_name=${{secrets.DOCKER_USERNAME}}/airconnect
+          image_name=${{secrets.DOCKER_USERNAME}}/listenbrainz-mpd
 
           ref_type=${{ github.ref_type }}
           echo "REF_TYPE: ["$ref_type"]"
