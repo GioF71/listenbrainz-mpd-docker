@@ -96,7 +96,7 @@ jobs:
           fi
           echo "Building tags: ["${tags}"]"
           echo "RELEASE_TAGS=${tags}" >> $GITHUB_OUTPUT
-          echo "BASE_IMAGE=${select_base_image}" >> $GITHUB_OUTPUT
+          echo "DEBIAN_VERSION=${select_base_image}" >> $GITHUB_OUTPUT
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -118,7 +118,7 @@ jobs:
         with:
           context: .
           build-args: |
-            BASE_IMAGE=${{ steps.prepare.outputs.BASE_IMAGE }}
+            DEBIAN_VERSION=${{ steps.prepare.outputs.DEBIAN_VERSION }}
           platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
           push: true
           tags: ${{ steps.prepare.outputs.RELEASE_TAGS }}

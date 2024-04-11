@@ -1,4 +1,5 @@
-FROM rust:slim-bookworm as builder
+ARG DEBIAN_VERSION
+FROM rust:slim-${DEBIAN_VERSION:-bookworm} as builder
 
 RUN apt-get update
 RUN apt-get install -y pkg-config
@@ -6,7 +7,8 @@ RUN apt-get install -y libssl-dev
 RUN apt-get install -y libsqlite3-dev
 RUN cargo install listenbrainz-mpd
 
-FROM debian:bookworm-slim AS INTERM
+ARG DEBIAN_VERSION
+FROM debian:${DEBIAN_VERSION:-bookworm}-slim AS INTERM
 
 RUN apt-get update
 RUN apt-get install -y openssl
