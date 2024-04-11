@@ -42,6 +42,7 @@ if [[ $current_user_id -eq 0 ]]; then
         if [ ! -d "$HOME_DIR" ]; then
             echo "Home directory [$HOME_DIR] not found, creating."
             mkdir -p $HOME_DIR
+            mkdir -p $HOME_DIR/.local/share/
             echo ". done."
         fi
         chown -R $PUID:$PGID $HOME_DIR
@@ -82,7 +83,20 @@ fi
 ### cache file
 cache_enabled=0
 cache_directory="/cache"
-cache_file=/cache/cache.db
+
+if [[ -n "${CACHE_DIRECTORY}" ]]; then
+    echo "Setting cache directory to [${CACHE_DIRECTORY}]"
+    cache_directory=${CACHE_DIRECTORY}
+fi
+
+cache_file="cache.sqlite3"
+
+if [[ -n "${CACHE_FILE}" ]]; then
+    echo "Setting cache file to [${CACHE_FILE}]"
+    cache_file=${CACHE_FILE}
+fi
+
+cache_path="${cache_directory}/${cache_file}"
 
 if [ -w $cache_directory ]; then
     if [[ -z "${ENABLE_CACHE}" ]] || \
@@ -92,7 +106,7 @@ if [ -w $cache_directory ]; then
         cache_enabled=1
         echo "Caching enabled."
         echo "enable_cache = true" >> $CONFIG_FILE
-        echo "cache_file = \"$cache_file\"" >> $CONFIG_FILE
+        echo "cache_file = \"$cache_path\"" >> $CONFIG_FILE
     elif [[ "${ENABLE_CACHE^^}" != "N" ]] && \
         [[ "${ENABLE_CACHE^^}" == "NO" ]] && \
         [[ "${ENABLE_CACHE^^}" == "FALSE" ]]; then
@@ -116,15 +130,15 @@ if [ $cache_enabled -eq 0 ]; then
     echo "enable_cache = false" >> $CONFIG_FILE
 else
     # create file if missing
-    if [ ! -f $cache_file ]; then
+    if [ ! -f $cache_path ]; then
         echo "Creating cache file ..."
-        sqlite3 $cache_file "VACUUM;"
+        sqlite3 $cache_path "VACUUM;"
         echo ". done"
     fi
     # set ownership if possible
     if [[ $current_user_id -eq 0 ]]; then
-        echo "Changing permissions for [$cache_file]"
-        chown $PUID:$PGID $cache_file
+        echo "Changing permissions for [$cache_path]"
+        chown $PUID:$PGID $cache_path
         echo ". done."
     fi
 fi
