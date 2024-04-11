@@ -58,34 +58,98 @@ if [[ -z "${LISTENBRAINZ_TOKEN}" ]] && [[ -z "${LISTENBRAINZ_TOKEN_FILE}" ]]; th
     exit 1
 fi
 
-# Create configuration file
 CONFIG_FILE=/tmp/config.toml
 if [ -f $CONFIG_FILE ]; then
     echo "Removing existing configuration file."
     rm $CONFIG_FILE
 fi
 
+# Create configuration file
+
+## submission section
+
+echo "[submission]" > $CONFIG_FILE
+
 if [[ -n "${LISTENBRAINZ_TOKEN}" ]]; then
-    echo "token = \"${LISTENBRAINZ_TOKEN}\"" > $CONFIG_FILE
+    echo "token = \"${LISTENBRAINZ_TOKEN}\"" >> $CONFIG_FILE
 elif [[ -n "${LISTENBRAINZ_TOKEN_FILE}" ]]; then
-    echo "token_file = \"${LISTENBRAINZ_TOKEN_FILE}\"" > $CONFIG_FILE
+    echo "token_file = \"${LISTENBRAINZ_TOKEN_FILE}\"" >> $CONFIG_FILE
 else
     echo "Token not available"
     exit 1
 fi
 
-# -c or --config <CONFIG>
+### cache file
+cache_enabled=0
+cache_directory="/cache"
+cache_file=/cache/cache.db
 
-CMD_LINE="/bin/bash"
+if [ -w $cache_directory ]; then
+    if [[ -z "${ENABLE_CACHE}" ]] || \
+        [[ "${ENABLE_CACHE^^}" == "Y" ]] || \
+        [[ "${ENABLE_CACHE^^}" == "YES" ]] || \
+        [[ "${ENABLE_CACHE^^}" == "TRUE" ]]; then
+        cache_enabled=1
+        echo "Caching enabled."
+        echo "enable_cache = true" >> $CONFIG_FILE
+        echo "cache_file = \"$cache_file\"" >> $CONFIG_FILE
+    elif [[ "${ENABLE_CACHE^^}" != "N" ]] && \
+        [[ "${ENABLE_CACHE^^}" == "NO" ]] && \
+        [[ "${ENABLE_CACHE^^}" == "FALSE" ]]; then
+        echo "Invalid ENABLE_CACHE=[${ENABLE_CACHE}]"
+        exit 1
+    fi
+else
+    # if we are root, we can change permissions
+    if [[ $current_user_id -eq 0 ]]; then
+        echo "Changing permissions for [$cache_directory]"
+        chown -R $PUID:$PGID $cache_directory
+        echo ". done."
+    else
+        # disabled because it's not writable
+        echo "Cache directory [${cache_directory}] is not writable, will be disabled"
+    fi
+fi
+
+if [ $cache_enabled -eq 0 ]; then
+    echo "Caching is disabled"
+    echo "enable_cache = false" >> $CONFIG_FILE
+else
+    # create file if missing
+    if [ ! -f $cache_file ]; then
+        echo "Creating cache file ..."
+        sqlite3 $cache_file "VACUUM;"
+        echo ". done"
+    fi
+    # set ownership if possible
+    if [[ $current_user_id -eq 0 ]]; then
+        echo "Changing permissions for [$cache_file]"
+        chown $PUID:$PGID $cache_file
+        echo ". done."
+    fi
+fi
+
+## mpd section
+echo "[mpd]" >> $CONFIG_FILE
+
+if [[ -n "${MPD_ADDRESS}" ]]; then
+    echo "address = \"${MPD_ADDRESS}\"" >> $CONFIG_FILE
+fi
+
+if [[ -n "${MPD_PASSWORD}" ]]; then
+    echo "password = \"${MPD_PASSWORD}\"" >> $CONFIG_FILE
+elif [[ -n "${MPD_PASSWORD_FILE}" ]]; then
+    echo "password_file = \"${MPD_PASSWORD_FILE}\"" >> $CONFIG_FILE
+fi
+
+cat $CONFIG_FILE
+
+CMD_LINE="listenbrainz-mpd -c $CONFIG_FILE"
+echo "CMD_LINE=[${CMD_LINE}]"
 
 if [[ $current_user_id -eq 0 ]]; then
-    if [[ "${BACKEND}" = "pulseaudio" || -n "${PUID}" ]]; then
-        echo "Running in user mode ..."
-        su - $USER_NAME -c "$CMD_LINE"
-    else
-        echo "Running as root ..."
-        eval $CMD_LINE
-    fi
+    echo "Running in user mode uid [$PUID] gid [$PGID] ..."
+    su - $USER_NAME -c "$CMD_LINE"
 else
     echo "Running as uid: [$current_user_id] ..."
     eval "$CMD_LINE"
