@@ -17,7 +17,7 @@ jobs:
         uses: meeDamian/sync-readme@v1.0.6
         with:
           user: ${{ secrets.DOCKER_USERNAME }}
-          pass: ${{ secrets.DOCKER_PASSWORD }}
+          pass: ${{ secrets.DOCKER_TOKEN }}
           slug: ${{ secrets.DOCKER_USERNAME }}/listenbrainz-mpd
           readme: ./README.md
           description: Run listenbrainz-mpd on docker
