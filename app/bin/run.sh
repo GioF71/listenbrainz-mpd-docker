@@ -52,6 +52,30 @@ else
     echo "Running with uid [$current_user_id]"
 fi
 
+# minimum config check
+if [[ -z "${LISTENBRAINZ_TOKEN}" ]] && [[ -z "${LISTENBRAINZ_TOKEN_FILE}" ]]; then
+    echo "Both LISTENBRAINZ_TOKEN and LISTENBRAINZ_TOKEN_FILE have not been specified, existing."
+    exit 1
+fi
+
+# Create configuration file
+CONFIG_FILE=/tmp/config.toml
+if [ -f $CONFIG_FILE ]; then
+    echo "Removing existing configuration file."
+    rm $CONFIG_FILE
+fi
+
+if [[ -n "${LISTENBRAINZ_TOKEN}" ]]; then
+    echo "token = \"${LISTENBRAINZ_TOKEN}\"" > $CONFIG_FILE
+elif [[ -n "${LISTENBRAINZ_TOKEN_FILE}" ]]; then
+    echo "token_file = \"${LISTENBRAINZ_TOKEN_FILE}\"" > $CONFIG_FILE
+else
+    echo "Token not available"
+    exit 1
+fi
+
+# -c or --config <CONFIG>
+
 CMD_LINE="/bin/bash"
 
 if [[ $current_user_id -eq 0 ]]; then
