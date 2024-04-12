@@ -42,9 +42,10 @@ if [[ $current_user_id -eq 0 ]]; then
         if [ ! -d "$HOME_DIR" ]; then
             echo "Home directory [$HOME_DIR] not found, creating."
             mkdir -p $HOME_DIR
-            mkdir -p $HOME_DIR/.local/share/
-            echo ". done."
         fi
+        echo "Ensuring directory [$HOME_DIR/.local/share/] ..."
+        mkdir -p $HOME_DIR/.local/share/
+        echo "done."
         chown -R $PUID:$PGID $HOME_DIR
         # set ownership on volumes
         chown -R $PUID:$PGID /cache
@@ -118,7 +119,7 @@ else
     if [[ $current_user_id -eq 0 ]]; then
         echo "Changing permissions for [$cache_directory]"
         chown -R $PUID:$PGID $cache_directory
-        echo ". done."
+        echo "done."
     else
         # disabled because it's not writable
         echo "Cache directory [${cache_directory}] is not writable, will be disabled"
@@ -133,13 +134,15 @@ else
     if [ ! -f $cache_path ]; then
         echo "Creating cache file ..."
         sqlite3 $cache_path "VACUUM;"
-        echo ". done"
+        echo "done"
     fi
     # set ownership if possible
-    if [[ $current_user_id -eq 0 ]]; then
-        echo "Changing permissions for [$cache_path]"
-        chown $PUID:$PGID $cache_path
-        echo ". done."
+    if [ -f $cache_path ]; then
+        if [[ $current_user_id -eq 0 ]]; then
+            echo "Changing permissions for [$cache_path]"
+            chown $PUID:$PGID $cache_path
+            echo "done."
+        fi
     fi
 fi
 
