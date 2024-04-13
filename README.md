@@ -1,6 +1,7 @@
 # listenbrainz-mpd-docker
 
-A docker image for [listenbrainz-mpd](https://codeberg.org/elomatreb/listenbrainz-mpd)
+A docker image for [listenbrainz-mpd](https://codeberg.org/elomatreb/listenbrainz-mpd).  
+A big thank you goes to the author, who also very quickly solved a few issues that have probably gone unnoticed in normal use, but that I encountered while building this docker image.   
 
 ## Links
 
