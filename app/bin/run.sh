@@ -73,8 +73,10 @@ fi
 echo "[submission]" > $CONFIG_FILE
 
 if [[ -n "${LISTENBRAINZ_TOKEN}" ]]; then
+    unset LISTENBRAINZ_TOKEN_FILE
     echo "token = \"${LISTENBRAINZ_TOKEN}\"" >> $CONFIG_FILE
 elif [[ -n "${LISTENBRAINZ_TOKEN_FILE}" ]]; then
+    unset LISTENBRAINZ_TOKEN
     echo "token_file = \"${LISTENBRAINZ_TOKEN_FILE}\"" >> $CONFIG_FILE
 else
     echo "Token not available"
@@ -154,8 +156,10 @@ if [[ -n "${MPD_ADDRESS}" ]]; then
 fi
 
 if [[ -n "${MPD_PASSWORD}" ]]; then
+    unset MPD_PASSWORD_FILE
     echo "password = \"${MPD_PASSWORD}\"" >> $CONFIG_FILE
 elif [[ -n "${MPD_PASSWORD_FILE}" ]]; then
+    unset MPD_PASSWORD
     echo "password_file = \"${MPD_PASSWORD_FILE}\"" >> $CONFIG_FILE
 fi
 
