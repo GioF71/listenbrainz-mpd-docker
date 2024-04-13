@@ -35,6 +35,7 @@ CACHE_FILE|Submission caching file, defaults to `cache.sqlite3`
 MPD_ADDRESS|ip/hostname and port of mpd, defaults to `localhost:6600`
 MPD_PASSWORD|MPD password, alternative to `MPD_PASSWORD_FILE`
 MPD_PASSWORD_FILE|MPD password file, alternative to `MPD_PASSWORD`
+LISTENBRAINZ_MPD_LOG|Log level (trace,debug,info,warn,error,off)
 PUID|Run the application using that uid, defaults to `1000`
 PGID|Run the application using that gid, defaults to `1000`
 
