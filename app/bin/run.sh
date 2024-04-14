@@ -155,7 +155,7 @@ if [[ -n "${GENRE_AS_FOLKSONOMY}" ]] && \
      [[ "${GENRE_AS_FOLKSONOMY^^}" == "YES" ]] || \
      [[ "${GENRE_AS_FOLKSONOMY^^}" == "TRUE" ]]); then
     echo "Setting genres_as_folksonomy to [${GENRE_AS_FOLKSONOMY}]"
-    echo "genres_as_folksonomy = \"true\"" >> $CONFIG_FILE
+    echo "genres_as_folksonomy = true" >> $CONFIG_FILE
     unset GENRE_AS_FOLKSONOMY
 elif [[ "${GENRE_AS_FOLKSONOMY^^}" != "N" ]] && \
      [[ "${GENRE_AS_FOLKSONOMY^^}" != "NO" ]] && \
