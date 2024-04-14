@@ -113,8 +113,8 @@ if [ -w $cache_directory ]; then
         echo "enable_cache = true" >> $CONFIG_FILE
         echo "cache_file = \"$cache_path\"" >> $CONFIG_FILE
     elif [[ "${ENABLE_CACHE^^}" != "N" ]] && \
-        [[ "${ENABLE_CACHE^^}" == "NO" ]] && \
-        [[ "${ENABLE_CACHE^^}" == "FALSE" ]]; then
+        [[ "${ENABLE_CACHE^^}" != "NO" ]] && \
+        [[ "${ENABLE_CACHE^^}" != "FALSE" ]]; then
         echo "Invalid ENABLE_CACHE=[${ENABLE_CACHE}]"
         exit 1
     fi
@@ -148,6 +148,26 @@ else
             echo "done."
         fi
     fi
+fi
+
+if [[ -n "${GENRE_AS_FOLKSONOMY}" ]] && \
+    ([[ "${GENRE_AS_FOLKSONOMY^^}" == "Y" ]] || \
+     [[ "${GENRE_AS_FOLKSONOMY^^}" == "YES" ]] || \
+     [[ "${GENRE_AS_FOLKSONOMY^^}" == "TRUE" ]]); then
+    echo "Setting genres_as_folksonomy to [${GENRE_AS_FOLKSONOMY}]"
+    echo "genres_as_folksonomy = \"true\"" >> $CONFIG_FILE
+    unset GENRE_AS_FOLKSONOMY
+elif [[ "${GENRE_AS_FOLKSONOMY^^}" != "N" ]] && \
+     [[ "${GENRE_AS_FOLKSONOMY^^}" != "NO" ]] && \
+     [[ "${GENRE_AS_FOLKSONOMY^^}" != "FALSE" ]]; then
+    echo "Invalid GENRE_AS_FOLKSONOMY=[${GENRE_AS_FOLKSONOMY}]"
+    exit 1
+fi
+
+if [[ -n "${GENRE_SEPARATOR}" ]]; then
+    echo "Setting genre_separator to [${GENRE_SEPARATOR}]"
+    echo "genre_separator = \"${GENRE_SEPARATOR}\"" >> $CONFIG_FILE
+    unset GENRE_SEPARATOR
 fi
 
 ## mpd section
