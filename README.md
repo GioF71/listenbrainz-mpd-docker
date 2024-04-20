@@ -69,3 +69,10 @@ services:
 
 Please note that the fact you need `network_mode: host` depends on how this container can reach the target mpd.  
 If you have set a docker network for mpd, you can avoid using host networking, but you will have to specify `MPD_ADDRESS` accordingly.  
+
+## Change history
+
+DATE|DESCRIPTION
+:---|:---
+2024-04-20|Bump to version [2.3.5](https://codeberg.org/elomatreb/listenbrainz-mpd/releases/tag/v2.3.5)
+2024-04-13|Initial Release
