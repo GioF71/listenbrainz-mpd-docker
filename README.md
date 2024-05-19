@@ -74,6 +74,7 @@ If you have set a docker network for mpd, you can avoid using host networking, b
 
 DATE|DESCRIPTION
 :---|:---
+2024-05-19|Bump to version [2.3.6](https://codeberg.org/elomatreb/listenbrainz-mpd/releases/tag/v2.3.6)
 2024-04-20|Bump to version [2.3.5](https://codeberg.org/elomatreb/listenbrainz-mpd/releases/tag/v2.3.5)
 2024-04-14|Support genre-related features
 2024-04-13|Initial Release
