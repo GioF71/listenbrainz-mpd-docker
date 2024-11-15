@@ -1,0 +1,11 @@
+---
+version: '3.3'
+
+services:
+  listenbrainz-mpd:
+    image: giof71/listenbrainz-mpd
+    network_mode: ${NETWORK_MODE:-host}
+    environment:
+      - MPD_ADDRESS=${MPD_ADDRESS:-localhost:6600}
+      - LISTENBRAINZ_TOKEN=${LISTENBRAINZ_TOKEN:-your-listenbrainz-token}
+    restart: ${RESTART_MODE:-no}

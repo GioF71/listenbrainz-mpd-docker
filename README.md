@@ -74,6 +74,7 @@ If you have set a docker network for mpd, you can avoid using host networking, b
 
 DATE|DESCRIPTION
 :---|:---
+2024-11-15|Fixed handling of GENRE_AS_FOLKSONOMY, see [this thread](https://moodeaudio.org/forum/showthread.php?tid=7083)
 2024-08-20|Building with version [2.3.8](https://codeberg.org/elomatreb/listenbrainz-mpd/releases/tag/v2.3.8)
 2024-06-06|Building with version [2.3.7](https://codeberg.org/elomatreb/listenbrainz-mpd/releases/tag/v2.3.7)
 2024-05-19|Building with version [2.3.6](https://codeberg.org/elomatreb/listenbrainz-mpd/releases/tag/v2.3.6)
