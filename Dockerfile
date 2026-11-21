@@ -12,7 +12,7 @@ FROM debian:${DEBIAN_VERSION:-trixie}-slim AS INTERM
 
 RUN apt-get update
 RUN apt-get install -y openssl
-RUN apt-get install -y libssl3
+RUN apt-get install -y libssl3t64
 RUN apt-get install -y ca-certificates
 RUN apt-get install -y sqlite3
 RUN rm -rf /var/lib/apt/lists/*
