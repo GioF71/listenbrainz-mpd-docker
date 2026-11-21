@@ -12,15 +12,15 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        base: ["bookworm"]
+        base: ["trixie"]
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Prepare for docker build
         id: prepare
@@ -37,10 +37,10 @@ jobs:
           echo "REF: ["$ref"]"
 
           declare -A special_tags
-          special_tags[bookworm]="${image_name}:latest,${image_name}:stable"
+          special_tags[trixie]="${image_name}:latest,${image_name}:stable"
 
           declare -A distro_friendly_name_dict
-          distro_friendly_name_dict[bookworm]=debian
+          distro_friendly_name_dict[trixie]=debian
 
           distro_friendly_name=${{ matrix.base }}
           lookup_distro_name=${distro_friendly_name_dict[${{ matrix.base }}]}
@@ -54,7 +54,7 @@ jobs:
             echo "tag is ["${ref_name}"]"
             if [[ "${ref_name}" = *"/"* ]]; then
               tag_type=$(echo ${ref_name} | cut -d '/' -f 1)
-              tag_name=$(echo ${ref_name} | cut -d '/' -f 2) 
+              tag_name=$(echo ${ref_name} | cut -d '/' -f 2)
             else
               if [[ "${ref_name}" = "v"* || "${ref_name}" = "f"* || "${ref_name}" = "d"* ]]; then
                 tag_type=${ref_name:0:1}
@@ -90,22 +90,22 @@ jobs:
           echo "DEBIAN_VERSION=${{ matrix.base }}" >> $GITHUB_OUTPUT
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
         with:
           platforms: all
 
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
           build-args: |
