@@ -2,14 +2,15 @@ name: Sync README.md to Docker Hub
 
 on:
   push:
-    main:
+    branches:
+      - main
     paths:
       - README.md
       - .github/workflows/sync-readme.yml
 
 jobs:
   sync-readme:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
 
@@ -22,6 +23,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
           repository: ${{ secrets.DOCKER_USERNAME }}/listenbrainz-mpd
-          readme-filepath: ./README.dockerhub.md
+          readme-filepath: ./README.md
           short-description: Run listenbrainz-mpd on docker
           enable-url-completion: true
