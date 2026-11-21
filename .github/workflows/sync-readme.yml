@@ -2,7 +2,11 @@ name: Sync README.md to Docker Hub
 
 on:
   push:
-    main:
+    branches:
+      - main
+    paths:
+      - README.md
+      - .github/workflows/sync-readme.yml
 
 jobs:
   sync-readme:
