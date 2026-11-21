@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        base: ["bookworm"]
+        base: ["trixie"]
 
     steps:
       - name: Checkout
@@ -37,10 +37,10 @@ jobs:
           echo "REF: ["$ref"]"
 
           declare -A special_tags
-          special_tags[bookworm]="${image_name}:latest,${image_name}:stable"
+          special_tags[trixie]="${image_name}:latest,${image_name}:stable"
 
           declare -A distro_friendly_name_dict
-          distro_friendly_name_dict[bookworm]=debian
+          distro_friendly_name_dict[trixie]=debian
 
           distro_friendly_name=${{ matrix.base }}
           lookup_distro_name=${distro_friendly_name_dict[${{ matrix.base }}]}
@@ -54,7 +54,7 @@ jobs:
             echo "tag is ["${ref_name}"]"
             if [[ "${ref_name}" = *"/"* ]]; then
               tag_type=$(echo ${ref_name} | cut -d '/' -f 1)
-              tag_name=$(echo ${ref_name} | cut -d '/' -f 2) 
+              tag_name=$(echo ${ref_name} | cut -d '/' -f 2)
             else
               if [[ "${ref_name}" = "v"* || "${ref_name}" = "f"* || "${ref_name}" = "d"* ]]; then
                 tag_type=${ref_name:0:1}

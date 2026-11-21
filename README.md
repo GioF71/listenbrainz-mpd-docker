@@ -1,7 +1,7 @@
 # listenbrainz-mpd-docker
 
-A docker image for [listenbrainz-mpd](https://codeberg.org/elomatreb/listenbrainz-mpd), available for amd64, armv7 and arm64v8 platforms.  
-A big thank you goes to the author, who also very quickly solved two issues that have probably gone unnoticed in normal use, but that I encountered while building this docker image.  
+A docker image for [listenbrainz-mpd](https://codeberg.org/elomatreb/listenbrainz-mpd), available for amd64, armv7 and arm64v8 platforms.
+A big thank you goes to the author, who also very quickly solved two issues that have probably gone unnoticed in normal use, but that I encountered while building this docker image.
 
 ## Links
 
@@ -19,7 +19,7 @@ From the repository directory, you can build your own image using the following:
 docker build . -t giof71/listenbrainz-mpd
 ```
 
-Please note that this will take a while, because the code will be compiled by [cargo](https://doc.rust-lang.org/cargo/).  
+Please note that this will take a while, because the code will be compiled by [cargo](https://doc.rust-lang.org/cargo/).
 
 ## Configuration
 
@@ -67,13 +67,14 @@ services:
     restart: unless-stopped
 ```
 
-Please note that the fact you need `network_mode: host` depends on how this container can reach the target mpd.  
-If you have set a docker network for mpd, you can avoid using host networking, but you will have to specify `MPD_ADDRESS` accordingly.  
+Please note that the fact you need `network_mode: host` depends on how this container can reach the target mpd.
+If you have set a docker network for mpd, you can avoid using host networking, but you will have to specify `MPD_ADDRESS` accordingly.
 
 ## Change history
 
 DATE|DESCRIPTION
 :---|:---
+2025-11-21|Building with version [2.6.0](https://codeberg.org/elomatreb/listenbrainz-mpd/releases/tag/v2.6.0)
 2025-08-07|Building with version [2.3.9](https://codeberg.org/elomatreb/listenbrainz-mpd/releases/tag/v2.3.9)
 2024-11-15|Fixed handling of GENRE_AS_FOLKSONOMY, see [this thread](https://moodeaudio.org/forum/showthread.php?tid=7083)
 2024-08-20|Building with version [2.3.8](https://codeberg.org/elomatreb/listenbrainz-mpd/releases/tag/v2.3.8)
