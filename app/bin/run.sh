@@ -3,8 +3,8 @@
 current_user_id=$(id -u)
 echo "Current user id is [$current_user_id]"
 
-DEFAULT_UID=1000
-DEFAULT_GID=1000
+DEFAULT_UID=0
+DEFAULT_GID=0
 
 if [[ $current_user_id -eq 0 ]] && [[ $PUID -ne 0 ]]; then
     if [[ -z "${PUID}" ]]; then
