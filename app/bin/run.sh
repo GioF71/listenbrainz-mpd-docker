@@ -6,7 +6,7 @@ echo "Current user id is [$current_user_id]"
 DEFAULT_UID=1000
 DEFAULT_GID=1000
 
-if [[ $current_user_id -eq 0 ]]; then
+if [[ $current_user_id -eq 0 ]] && [[ $PUID -ne 0 ]]; then
     if [[ -z "${PUID}" ]]; then
         PUID=${DEFAULT_UID}
     fi
@@ -120,7 +120,7 @@ if [ -w $cache_directory ]; then
     fi
 else
     # if we are root, we can change permissions
-    if [[ $current_user_id -eq 0 ]]; then
+    if [[ $current_user_id -eq 0 ]] && [[ $PUID -ne 0 ]]; then
         echo "Changing permissions for [$cache_directory]"
         chown -R $PUID:$PGID $cache_directory
         echo "done."
@@ -142,7 +142,7 @@ else
     fi
     # set ownership if possible
     if [ -f $cache_path ]; then
-        if [[ $current_user_id -eq 0 ]]; then
+        if [[ $current_user_id -eq 0 ]] && [[ $PUID -ne 0 ]]; then
             echo "Changing permissions for [$cache_path]"
             chown $PUID:$PGID $cache_path
             echo "done."
@@ -193,7 +193,7 @@ cat $CONFIG_FILE
 CMD_LINE="listenbrainz-mpd -c $CONFIG_FILE"
 echo "CMD_LINE=[${CMD_LINE}]"
 
-if [[ $current_user_id -eq 0 ]]; then
+if [[ $current_user_id -eq 0 ]] && [[ $PUID -ne 0 ]]; then
     echo "Running in user mode uid [$PUID] gid [$PGID] ..."
     su - $USER_NAME -c "$CMD_LINE"
 else
